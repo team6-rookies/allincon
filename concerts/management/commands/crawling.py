@@ -10,7 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
-from concerts.models import Location, Concert
+from concerts.models import Location, Concert, Site
 
 def parse_date(date_str):
     if not date_str:
@@ -35,6 +35,15 @@ class Command(BaseCommand):
         scraped_count = 0
         created_count = 0
         updated_count = 0
+        current_site_name = "티켓링크"
+        try:
+            source_site_obj, ss_created = Site.objects.get_or_create(name=current_site_name)
+            if ss_created:
+                self.stdout.write(self.style.SUCCESS(f"출처 사이트 '{current_site_name}' 레코드를 생성했습니다."))
+            else:
+                self.stdout.write(f"출처 사이트 '{current_site_name}' 레코드를 사용합니다.")
+        except Exception as e:
+            raise CommandError(f"출처 사이트 '{current_site_name}' 처리 중 오류 : {e}")
 
         with webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options_webdriver) as driver:
             driver.get(url)
@@ -96,7 +105,8 @@ class Command(BaseCommand):
                         location=location_obj,
                         start_date=parsed_start_date,
                         defaults={ #업데이트할 필드들
-                            'end_date': parsed_end_date
+                            'end_date': parsed_end_date,
+                            'source' : source_site_obj,
                             }
                         )
                     scraped_count += 1

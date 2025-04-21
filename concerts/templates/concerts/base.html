@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'concerts/css/style.css' %}">
+    <title>{% block title %}올인콘{% endblock %}</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><a href="{% url 'concerts:index' %}" style="text-decoration: none; color: inherit;">올인콘</a></h1>
+        </header>
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+        <footer>
+        </footer>
+    </div>
+</body>
+</html>

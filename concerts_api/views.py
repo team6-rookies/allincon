@@ -1,7 +1,9 @@
-from rest_framework import generics, permissions, filters
-from rest_framework.decorators import api_view
-from .serializers import LocationSerializer, ConcertSerializer, SiteSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+#from rest_framework.decorators import api_view
 from concerts.models import Location, Concert, Site
+from .serializers import ConcertSerializer
 
 # @api_view()
 # def concert_list(request):
@@ -9,71 +11,48 @@ from concerts.models import Location, Concert, Site
 #     serializer = ConcertSerializer(concerts, many = True)
 #     return Response(serializer.data)
 
-class LocationListAPIView(generics.ListAPIView):
-    """ Location 목록 조회 API (GET) """
-    queryset = Location.objects.all().order_by('name')
-    serializer_class = LocationSerializer
-    permission_classes = [permissions.AllowAny]
-    # 검색 기능 유지 (선택 사항)
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['name']
+class ConcertCrawlAPIView(APIView):
+    def post(self, request):
+        concert_data_list = request.data
+        successful_uploads = 0
+        failed_uploads = []
+        for data in concert_data_list:
+            location_name = data.get('location')
+            site_name = data.get('source')
+            location_obj = None
+            if location_name and location_name.strip():
+                location_obj, _ = Location.objects.get_or_create(name=location_name.strip())
 
-class LocationRetrieveAPIView(generics.RetrieveAPIView):
-    """ Location 상세 조회 API (GET) """
-    queryset = Location.objects.all()
-    serializer_class = LocationSerializer
-    permission_classes = [permissions.AllowAny]
-    # lookup_field = 'pk' # 기본값이 pk 이므로 생략 가능
+            site_obj = None
+            if site_name and site_name.strip():
+                site_obj, _ = Site.objects.get_or_create(name=site_name.strip())
 
-# --- Site Views ---
-class SiteListAPIView(generics.ListAPIView):
-    """ Site 목록 조회 API (GET) """
-    queryset = Site.objects.all().order_by('name')
-    serializer_class = SiteSerializer
-    permission_classes = [permissions.AllowAny]
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['name']
-
-class SiteRetrieveAPIView(generics.RetrieveAPIView):
-    """ Site 상세 조회 API (GET) """
-    queryset = Site.objects.all()
-    serializer_class = SiteSerializer
-    permission_classes = [permissions.AllowAny]
-
-# --- Concert Views ---
-class ConcertListAPIView(generics.ListAPIView):
-    """ Concert 목록 조회 API (GET) """
-    queryset = Concert.objects.all().order_by('start_date', 'title')
-    serializer_class = ConcertSerializer
-    permission_classes = [permissions.AllowAny]
-    # 검색 기능 유지 (선택 사항)
-    filter_backends = [filters.SearchFilter] # 필요하면 DjangoFilterBackend 등 추가
-    search_fields = ['title', 'location__name', 'source__name'] # 검색 필드 확장
-
-class ConcertRetrieveAPIView(generics.RetrieveAPIView):
-    """ Concert 상세 조회 API (GET) """
-    queryset = Concert.objects.all()
-    serializer_class = ConcertSerializer
-    permission_classes = [permissions.AllowAny]
-
-# --- (선택 사항) 특정 Location 의 콘서트 목록 API ---
-class ConcertsByLocationAPIView(generics.ListAPIView):
-    """ 특정 Location ID에 해당하는 Concert 목록 조회 API (GET) """
-    serializer_class = ConcertSerializer
-    permission_classes = [permissions.AllowAny]
-
-    def get_queryset(self):
-        """ URL에서 location_pk를 받아 해당 location의 콘서트만 필터링 """
-        location_pk = self.kwargs['location_pk'] # URL 파라미터 가져오기
-        return Concert.objects.filter(location__pk=location_pk).order_by('start_date', 'title')
-
-# --- (선택 사항) 특정 Site 의 콘서트 목록 API ---
-class ConcertsBySiteAPIView(generics.ListAPIView):
-    """ 특정 Site ID에 해당하는 Concert 목록 조회 API (GET) """
-    serializer_class = ConcertSerializer
-    permission_classes = [permissions.AllowAny]
-
-    def get_queryset(self):
-        """ URL에서 source_pk를 받아 해당 source의 콘서트만 필터링 """
-        source_pk = self.kwargs['source_pk'] # URL 파라미터 가져오기
-        return Concert.objects.filter(source__pk=source_pk).order_by('start_date', 'title')
+            serializer_data = {
+                'title': data.get('title'),
+                'location': location_obj.id if location_obj else None, 
+                'source': site_obj.id if site_obj else None,      
+                'start_date': data.get('start_date'),
+                'end_date': data.get('end_date'),
+                }
+            
+            serializer = ConcertSerializer(data=serializer_data)
+            if serializer.is_valid(raise_exception=False):
+                serializer.save()
+                successful_uploads += 1
+            else:
+                failed_uploads.append({
+                    "input_data": data, 
+                    "errors": serializer.errors
+                })
+            
+        response_data = {
+            "message": "데이터 처리가 완료되었습니다.",
+            "total_received": len(concert_data_list),
+            "successful_uploads": successful_uploads,
+            "failed_uploads": failed_uploads,
+            "failed_count": len(failed_uploads)
+        }
+        if failed_uploads:
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(response_data, status=status.HTTP_201_CREATED)

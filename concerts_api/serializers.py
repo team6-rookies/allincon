@@ -12,9 +12,19 @@ class SiteSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 class ConcertSerializer(serializers.ModelSerializer):
-    location = LocationSerializer(read_only=True)
-    source = SiteSerializer(read_only=True)
+    location = serializers.PrimaryKeyRelatedField(
+        queryset=Location.objects.all(),
+        required=False,
+        allow_null=True
+    )
+    source = serializers.PrimaryKeyRelatedField(
+        queryset=Site.objects.all(),
+        required=False,
+        allow_null=True
+    )
 
     class Meta:
         model = Concert
-        fields = ['id', 'title', 'location', 'start_date', 'end_date', 'source']
+        fields = [
+            'id', 'title', 'location', 'start_date', 'end_date', 'source',
+            ]

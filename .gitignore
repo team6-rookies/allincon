@@ -1,0 +1,47 @@
+# Virtual Environment
+venv/
+/venv/
+*/venv/
+project1/  # 가상환경 이름이 project1 이라면 추가
+.venv/
+*/.venv/
+env/
+/env/
+*/env/
+ENV/
+/ENV/
+*/ENV/
+*.pyc
+*~
+__pycache__/
+.env
+db.sqlite3  # 개발용 SQLite DB 파일 (보통 제외)
+*.sqlite3
+
+# Static files (collected) - 배포 시 서버에서 관리
+/staticfiles/
+staticfiles/
+*/staticfiles/
+
+# Media files (user uploaded) - 배포 시 서버에서 관리
+/mediafiles/
+mediafiles/
+*/mediafiles/
+
+# Log files
+*.log
+logs/
+/logs/
+*/logs/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Secrets (if any - use environment variables instead!)
+# secret_key.txt
+# *.pem

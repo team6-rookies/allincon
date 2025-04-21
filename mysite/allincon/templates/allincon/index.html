@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<h1>콘서트 목록</h1>
+<ul>
+  {% for concert in concerts %}
+    <li>
+      <strong>{{ concert.title }}</strong><br>
+      시작: {{ concert.start_date }}<br>
+      종료: {{ concert.end_date }}<br>
+      장소: {{ concert.location }}
+    </li>
+  {% endfor %}
+</ul>

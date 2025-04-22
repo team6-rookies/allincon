@@ -1,8 +1,3 @@
-#import os
-#import django
-#os.environ.setdefault("DJANGO_SETTINGS_MODULE", "allincon.settings")
-#django.setup()
-
 import json
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -26,7 +21,7 @@ def scroll_to_bottom(driver):
 def format_date(date_string):
     try:
         dt = datetime.strptime(date_string, "%Y.%m.%d")
-        return dt.strftime("%Y-%m-%dT00:00:00")  # ISO 형식
+        return dt.strftime("%Y-%m-%d") 
     except Exception as e:
         print(f"날짜 포맷 에러: {e}")
         return None

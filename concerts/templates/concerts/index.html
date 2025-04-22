@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All in Con</title>
+</head>
+<body>
+    <h1>All In Con</h1>
+        <form method="get" action="{% url 'concert_list' %}">
+
+            <input type="text" id="title" name="query" placeholder="검색어를 입력하세요.">
+                <select name="search_type">
+                    <option value="" disabled selected>키워드를 입력하세요</option>
+                    <option value="title" >콘서트명</option>
+                    <option value="location" >콘서트 장소</option>
+                    <option value="start_date" >콘서트 일시</option>
+                </select>
+                <button type="submit">검색</button>
+        </form>
+        <ul>
+            <a href="{% url 'concert_list' %}">[ 콘서트 모아보기 ]</a>
+            <a href="{% url 'location_list' %}">[ 장소별 모아보기 ]</a>
+        </ul>
+</body>    
+</html>

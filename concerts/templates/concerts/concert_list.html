@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>콘서트 모아보기</title>
+    <a href="{% url 'index' %}">← 돌아가기</a>
+</head>
+<body>
+    <h1>콘서트 목록</h1>
+    <ul>
+        {% for concert in concerts %}
+            <li>
+                <strong>{{ concert.title }}</strong><br>
+                공연장소: {{ concert.location }}<br>
+                시작일: {{ concert.start_date|date:"Y-m-d" }}<br>
+                종료일: {{ concert.end_date|date:"Y-m-d" }}
+            </li>    
+        {% empty %}
+            <li>등록된 콘서트가 없습니다.</li>
+        {% endfor %}
+    </ul>
+    
+</body>
+</html>

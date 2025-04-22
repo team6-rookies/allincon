@@ -80,7 +80,7 @@ class LocationListView(APIView):
             # 가장 가까운 콘서트 가져오기 (start_date가 현재 시간 이후인 것 중 가장 가까운)
             closest_concert = Concert.objects.filter(
                 location=location,
-                start_date__gte=now
+                end_date__gte=now
             ).order_by('start_date').first()
 
             location_data.append({

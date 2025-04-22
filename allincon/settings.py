@@ -107,10 +107,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+# TIME_ZONE = "UTC" -> "Asia/Seoul" 변경!!
+TIME_ZONE = "Asia/Seoul"  
 
 USE_I18N = True
 
+# 기존 USE_TZ = True -> False로 변경!!
+# USE_TZ = False -> 한국 시간으로 저장
 USE_TZ = True
 
 

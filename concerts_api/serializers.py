@@ -11,7 +11,7 @@ class SiteSerializer(serializers.ModelSerializer):
         model = Site
         fields = ['id', 'name']
 
-class ConcertSerializer(serializers.ModelSerializer):
+class ConcertWriteSerializer(serializers.ModelSerializer):
     location = serializers.PrimaryKeyRelatedField(
         queryset=Location.objects.all(),
         required=False,
@@ -28,3 +28,17 @@ class ConcertSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'title', 'location', 'start_date', 'end_date', 'source',
             ]
+
+class ConcertListSerializer(serializers.ModelSerializer):
+    location = serializers.StringRelatedField(read_only=True)
+    source = serializers.StringRelatedField(read_only=True)
+
+    class Meta:
+        model = Concert
+        fields = [
+            'id', 'title', 'location', 'start_date', 'end_date', 'source',
+        ]
+
+class VenueConcertCountSerializer(serializers.Serializer):
+    name = serializers.CharField(help_text="공연장 이름")
+    concert_count = serializers.IntegerField(help_text="해당 공연장의 콘서트 수")

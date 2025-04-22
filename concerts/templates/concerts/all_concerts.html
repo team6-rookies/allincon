@@ -55,7 +55,7 @@
         <a href="{% url 'concerts:index' %}">홈으로 돌아가기</a>
         {% if location or is_search_result %}
         | <a href="{% url 'concerts:all_concerts' %}">모든 콘서트 보기</a>
-        | <a href="{% url 'concerts:list_locations' %}">공연장 목록 보기</a>
+        | <a href="{% url 'concerts:venue_stats' %}">공연장 목록 보기</a>
         {% endif %}
     </div>
 {% endblock %}

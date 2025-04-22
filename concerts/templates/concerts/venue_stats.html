@@ -1,0 +1,23 @@
+{% extends "concerts/base.html" %}
+
+{% block title %}공연장별 콘서트 수{% endblock %}
+
+{% block content %}
+    <h2>공연장별 콘서트 수</h2>
+    {% if venue_stats %}
+        <ul class="location-list">
+            {% for venue in venue_stats %}
+            <li class="location-item">
+                {# 공연장 이름을 클릭하면 해당 공연장의 콘서트 목록으로 이동 #}
+                <h3><a href="{% url 'concerts:concerts_by_location' venue.id %}">{{ venue.name }}</a> ({{ venue.concert_count }}개)</h3>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p style="text-align: center;">콘서트 정보가 등록된 공연장이 없습니다.</p>
+    {% endif %}
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'concerts:index' %}">홈으로 돌아가기</a>
+        | <a href="{% url 'concerts:all_concerts' %}">모든 콘서트 보기</a>
+    </div>
+{% endblock %}

@@ -11,7 +11,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 TARGET_URL = "https://www.ticketlink.co.kr/performance/14"
-API_ENDPOINT = "http://127.0.0.1:8000/rest/concerts/"
+API_ENDPOINT = "http://127.0.0.1:8000/api/concerts/upload/"
 CURRENT_SOURCE_NAME = "티켓링크"
 
 def parse_date_str(date_str):
@@ -138,7 +138,7 @@ def run_scraper():
                     except requests.exceptions.JSONDecodeError:
                         print(f"  오류 내용 (텍스트): {response.text[:500]}...")
                 else:
-                    print(f"  실패: 예상치 못한 응답. 상태코드: {response.status_code}, 내용: {response.text[:200]}...")
+                    print(f"  실패: 예상치 못한 응답. 상태코드: {response.status_code}, 내용: {response.text[:-1]}...")
             except requests.exceptions.RequestException as req_err:
                 print(f"  오류: API 서버로 데이터 전송 중 오류 발생: {req_err}")
             print("데이터 전송 완료.")

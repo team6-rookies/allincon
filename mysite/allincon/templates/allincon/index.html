@@ -3,32 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <title>All in Con에 오신걸 환영합니다!</title>
-    <!-- 검색 바 -->
-    <form action="{% url 'concert-list' %}" method="GET">
-        <input type="text" name="query" placeholder="검색어를 입력하세요" required />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            width: 60%;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="text"], select, button {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 10px;
+        }
+        ul {
+            list-style-type: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>All in Con에 오신걸 환영합니다!</h1>
+        <form action="{% url 'concert-list' %}" method="GET">
+            <input type="text" name="query" placeholder="검색어를 입력하세요" required />
             <select name="search_type">
                 <option value="" disabled selected>키워드를 선택하세요</option>
                 <option value="title">공연 제목</option>
                 <option value="location">장소</option>
             </select>
             <button type="submit">검색</button>
-    </form>
-    <a href="{% url 'concert-list' %}">모든 콘서트 한눈에 보기!</a><br>
-    <a href="{% url 'location-list' %}">장소별 콘서트 한눈에 보기!</a><br>
-    {% if concerts %}
-    <div id="results">
-        <h3>검색 결과 ({{ concerts|length }}건):</h3>
-        <ul>
-            {% for concert in concerts %}
-                <li>
-                    <strong>제목:</strong> {{ concert.title }}<br>
-                    <strong>장소:</strong> {{ concert.location }}<br>
-                    <strong>시작일:</strong> {{ concert.start_date }}<br>
-                    <strong>종료일:</strong> {{ concert.end_date }}<br>
-                    <strong>사이트:</strong> {{ concert.site }}<br><br>
-                </li>
-            {% endfor %}
-        </ul>
+        </form>
+        <a href="{% url 'concert-list' %}">모든 콘서트 한눈에 보기!</a><br>
+        <a href="{% url 'location-list' %}">장소별 콘서트 한눈에 보기!</a><br>
+        <a href="{% url 'concert-month' %}">월별 콘서트 목록</a><br>
+
+        {% if concerts %}
+        <div id="results">
+            <h3>검색 결과 ({{ concerts|length }}건):</h3>
+            <ul>
+                {% for concert in concerts %}
+                    <li>
+                        <strong>제목:</strong> {{ concert.title }}<br>
+                        <strong>장소:</strong> {{ concert.location }}<br>
+                        <strong>시작일:</strong> {{ concert.start_date }}<br>
+                        <strong>종료일:</strong> {{ concert.end_date }}<br>
+                        <strong>사이트:</strong> {{ concert.site }}<br><br>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
     </div>
-{% endif %}
+</body>
 </html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ location.name }} - 콘서트 목록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            padding: 20px 0;
+        }
+        p {
+            font-size: 16px;
+            color: #555;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #fff;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+        strong {
+            font-size: 18px;
+            color: #007BFF;
+        }
+        a {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ location.name }}</h1>
+        <p><strong>주소:</strong> {{ location.address }}</p>
+        <p><strong>최대 수용 인원:</strong> {{ location.max_people }}</p>
+
+        <h2>이 장소에서 열리는 콘서트</h2>
+        <ul>
+            {% for concert in concerts %}
+                <li>
+                    <strong>{{ concert.title }}</strong> <br>
+                    <em>날짜:</em> {{ concert.start_date }} ~ {{ concert.end_date }} <br>
+                    <em>출처:</em> <a href="{{ concert.site }}" target="_blank">{{ concert.site }}</a>
+                </li>
+            {% empty %}
+                <li><strong>이 장소에서 예정된 콘서트가 없습니다.</strong></li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

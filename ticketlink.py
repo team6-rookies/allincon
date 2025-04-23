@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+import requests 
+=======
 import requests
+>>>>>>> a04d31ec61247c49316b193136ab1c3ae53c5fd9
 import time
 from datetime import datetime
 
@@ -94,7 +98,11 @@ def run_scraper():
                         payload = {
                             'title': title,
                             'location': place,
+<<<<<<< HEAD
+                            'source': CURRENT_SOURCE_NAME,
+=======
                             'site': CURRENT_SOURCE_NAME,
+>>>>>>> a04d31ec61247c49316b193136ab1c3ae53c5fd9
                             'start_date': formatted_start_date,
                             'end_date': formatted_end_date,
                         }

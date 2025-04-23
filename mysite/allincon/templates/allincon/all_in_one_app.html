@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>콘서트 목록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            padding: 20px 0;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #fff;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+        strong {
+            font-size: 18px;
+            color: #007BFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>콘서트 목록</h1>
+        <ul>
+            {% if concerts|length == 0 %}
+                <li>콘서트가 없습니다.</li>
+            {% else %}
+                <li><strong>총 {{ concerts|length }}개의 콘서트가 있습니다.</strong></li>
+                {% for concert in concerts %}
+                <li>
+                    <strong>{{ concert.title }}</strong><br>
+                    <em>시작:</em> {{ concert.start_date }}<br>
+                    <em>종료:</em> {{ concert.end_date }}<br>
+                    <em>장소:</em> {{ concert.location }}<br>
+                    <em>출처:</em> <a href="https://ticket.melon.com/" target="_blank">{{ concert.site }}</a><br>
+                </li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+    </div>
+</body>
+</html>

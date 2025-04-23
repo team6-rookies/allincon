@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>콘서트 메인 페이지</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f9f9f9;
+    }
+    .menu {
+      text-align: center;
+    }
+    .menu a {
+      display: block;
+      margin: 1rem;
+      font-size: 1.5rem;
+      text-decoration: none;
+      color: #333;
+      border: 1px solid #ccc;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+    }
+    .menu a:hover {
+      background-color: #e0e0e0;
+    }
+  </style>
+</head>
+
+
+<body>
+  <div class="menu">
+    <h1>🎵 올인콘</h1>
+    <br>
+
+    <br>
+    <a href="{% url 'concerts:all_concerts' %}">전체 콘서트 보기</a>
+    <a href="{% url 'concerts:all_locations'%}">장소별 콘서트 보기 (서울)</a>
+  </div>
+</body>
+</html>

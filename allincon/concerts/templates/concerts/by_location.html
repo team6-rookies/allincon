@@ -1,0 +1,8 @@
+<h1> {{ location }} 에 있는 콘서트 모음</h1>
+{% for concert in concerts %}
+    <li> 
+        {{ concert.title }}  </a>
+        {{ concert.start_date }} ~ {{ concert.end_date }} / 
+        {{ concert.site.name }} 판매
+    </li>
+{% endfor %}

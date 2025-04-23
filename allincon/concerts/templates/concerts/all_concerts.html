@@ -1,0 +1,9 @@
+{% for concert in concerts %}
+    <li>
+      <h2> {{ concert.title }} </h2>
+    {{ concert.title }} / 
+    {{ concert.location.name }} / 
+    {{ concert.start_date }} ~ {{ concert.end_date }} / 
+    {{ concert.site.name }} 판매
+  </li>
+{% endfor %}

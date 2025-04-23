@@ -13,7 +13,7 @@ class Site(models.Model):
         return self.name
     
 class Location(models.Model):
-    id = models.IntegerField(primary_key=True)  # 기본 id 대신 명시적으로 설정
+    id = models.CharField(max_length=20, primary_key=True)  # 기본 id 대신 명시적으로 설정
     name = models.CharField(max_length=200, unique=True)
 
     def __str__(self):

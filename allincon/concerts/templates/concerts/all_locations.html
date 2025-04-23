@@ -1,0 +1,5 @@
+{% for location in locations %}
+    <li> 
+        <a href="{% url 'concerts:by_location' location.id %}">{{ location.name }} 보러가기 클릭!</a>
+    </li>
+{% endfor %}

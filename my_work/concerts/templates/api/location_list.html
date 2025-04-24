@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>장소 목록</title>
+    <style>
+        body { font-family: sans-serif; padding: 2rem; background: #f4f4f4; }
+        h1 { color: #2c3e50; }
+
+        .location {
+            background: white; padding: 1rem; border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05); margin-bottom: 1rem;
+        }
+        .location h2 { margin: 0 0 0.5rem; }
+        .location a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .location a:hover {
+            text-decoration: underline;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .btn {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 8px 16px;
+            background: #cce5ff;
+            color: #004085;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            border: 1px solid #b8daff;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background: #b8daff;
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <a href="{% url 'concert-search' %}" class="btn">🔙 돌아가기</a>
+    </div>
+
+    <h1>📍 장소 목록</h1>
+
+    {% for location in locations %}
+    <div class="location">
+        <h2>
+            <a href="{% url 'concerts-by-location' location_id=location.location_id %}">
+                {{ location.location_name }}
+            </a>
+        </h2>
+    </div>
+    {% empty %}
+    <p>등록된 장소가 없습니다.</p>
+    {% endfor %}
+</body>
+</html>

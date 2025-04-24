@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>검색 창</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 2rem;
+            background: #f4f4f4;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .search-container {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 2rem auto;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .concert {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            margin-bottom: 1rem;
+        }
+        .concert h2 {
+            margin: 0 0 0.5rem;
+        }
+        .concert p {
+            margin: 0.2rem 0;
+        }
+        .concert-list {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .btn {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 8px 16px;
+            background: #cce5ff;
+            color: #004085;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            border: 1px solid #b8daff;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background: #b8daff;
+        }
+    </style>    
+</head>
+<body>
+    <!-- 검색창 -->
+    <div class="search-container">
+        <h1>🎶 콘서트 검색</h1>
+        <form method="get">
+            <input type="text" name="q" value="{{ request.GET.q }}" placeholder="검색어 입력">
+            <button type="submit">검색</button>
+        </form>
+    </div>
+
+    <!-- 버튼들 -->
+    <div class="button-container">
+        <a href="{% url 'concert-list' %}" class="btn">🎵 콘서트 모두 보기</a>
+        <a href="{% url 'location-list' %}" class="btn">📍 장소 모두 보기</a>
+    </div>
+
+    <!-- 검색 결과 -->
+    {% if request.GET.q == "" %}
+    <p>검색어를 입력해주세요.</p>
+    {% elif concerts %}
+        <div class="concert-list">
+            {% for concert in concerts %}
+                <div class="concert">
+                    <h2>{{ concert.title }}</h2>
+                    <p>📍 {{ concert.location.location_name }}</p>
+                    <p>📅 {{ concert.start_date }} ~ {{ concert.end_date }}</p>
+                    <p>🎫 {{ concert.site.site_name }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% elif request.GET.q %}
+        <p>검색 결과가 없습니다.</p>
+    {% endif %}
+</body>
+</html>
